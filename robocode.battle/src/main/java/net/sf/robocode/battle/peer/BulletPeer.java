@@ -186,6 +186,12 @@ public class BulletPeer {
 				if (!victim.isSentryRobot()) {
 					owner.updateEnergy(Rules.getBulletHitBonus(power));
 				}
+				
+				// if victim were a hostage, owner would be drained energy
+				// i know, it's dirty...				
+				if (victim.getName().contains("bot.HOSTAGE")) {
+					owner.updateEnergy( - Rules.getBulletDamage(power));
+				}
 
 				otherRobot.addEvent(
 						new HitByBulletEvent(
