@@ -1031,8 +1031,16 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 						statistics.scoreRammingDamage(otherRobot.getName());
 					}
 
-					this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
-					otherRobot.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
+					// if hit a bomb
+					// XXX just another dirty hand
+					if (otherRobot.getName().contains("bot.BOMB")) {
+						// both bomb and robot will be kaboom
+						this.drainEnergy();
+						otherRobot.drainEnergy();
+					} else {
+						this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
+						otherRobot.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
+					}
 
 					if (otherRobot.energy == 0) {
 						if (otherRobot.isAlive()) {

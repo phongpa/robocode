@@ -191,6 +191,9 @@ public class BulletPeer {
 				// i know, it's dirty...				
 				if (victim.getName().contains("bot.HOSTAGE")) {
 					owner.updateEnergy( - Rules.getBulletDamage(power));
+				} else if (victim.getName().contains("bot.BOMB")) {
+					// if victim were a boom
+					victim.drainEnergy();;
 				}
 
 				otherRobot.addEvent(
