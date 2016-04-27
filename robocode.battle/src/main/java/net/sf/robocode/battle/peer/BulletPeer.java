@@ -194,7 +194,7 @@ public class BulletPeer {
 					owner.updateEnergy( - Rules.getBulletDamage(power));
 				} else if (victim.getName().contains("bot.BOMB")) {
 					// if victim were a boom
-					victim.drainEnergy();;
+					victim.kill();;
 				}
 
 				otherRobot.addEvent(

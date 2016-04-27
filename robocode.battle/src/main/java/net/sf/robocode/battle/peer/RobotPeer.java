@@ -1035,8 +1035,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					// XXX just another dirty hand
 					if (otherRobot.getName().contains("bot.BOMB")) {
 						// both bomb and robot will be kaboom
-						this.drainEnergy();
-						otherRobot.drainEnergy();
+						this.kill();
+						otherRobot.kill();
 					} else {
 						this.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
 						otherRobot.updateEnergy(-Rules.ROBOT_HIT_DAMAGE);
