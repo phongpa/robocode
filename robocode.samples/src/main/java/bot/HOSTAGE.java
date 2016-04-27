@@ -4,9 +4,11 @@
 package bot;
 
 import java.awt.Color;
+import java.util.Random;
 
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 import robocode.TurnCompleteCondition;
@@ -18,24 +20,34 @@ import robocode.TurnCompleteCondition;
  *
  */
 public class HOSTAGE extends AdvancedRobot {
-	private boolean movingForward = false;
+	boolean movingForward;
 
-	/**
-	 * run: HOSTAGE's default behavior
-	 */
 	public void run() {
-		 setColors(Color.gray, Color.gray,Color.gray); // body,gun,radar
+		setColors(Color.gray, Color.gray,Color.gray); // body,gun,radar
 
-		// Robot main loop
-		while(true) {
-			ahead(40000);
+		while (true) {
+			setAhead(randomBetween(0, 99999));
 			movingForward = true;
-			setTurnRight(90);
+			setTurnRight(randomBetween(0, 90));
 			waitFor(new TurnCompleteCondition(this));
-			setTurnLeft(180);
+			setTurnLeft(randomBetween(90, 180));
 			waitFor(new TurnCompleteCondition(this));
-			setTurnRight(180);
+			setTurnRight(randomBetween(90, 180));
 			waitFor(new TurnCompleteCondition(this));
+		}
+	}
+
+	public void onHitWall(HitWallEvent e) {
+		reverseDirection();
+	}
+
+	public void reverseDirection() {
+		if (movingForward) {
+			setBack(randomBetween(0, 99999));
+			movingForward = false;
+		} else {
+			setAhead(randomBetween(0, 99999));
+			movingForward = true;
 		}
 	}
 
@@ -43,21 +55,15 @@ public class HOSTAGE extends AdvancedRobot {
 		doNothing();
 	}
 
-	public void onHitByBullet(HitByBulletEvent e) {
-		doNothing();
-	}
-	
-	public void onHitWall(HitWallEvent e) {
-		reverseDirection();
-	}
-	
-	public void reverseDirection() {
-		if (movingForward) {
-			setBack(40000);
-			movingForward = false;
-		} else {
-			setAhead(40000);
-			movingForward = true;
+	public void onHitRobot(HitRobotEvent e) {
+		if (e.isMyFault()) {
+			reverseDirection();
 		}
+	}
+
+	private int randomBetween(Integer min, Integer max) {
+		Random rand = new Random();
+		int num = rand.nextInt(max - min + 1) + min;
+		return num;
 	}
 }
