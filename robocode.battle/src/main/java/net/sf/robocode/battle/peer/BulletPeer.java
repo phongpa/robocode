@@ -15,6 +15,7 @@ import robocode.control.snapshot.BulletState;
 import java.awt.geom.Line2D;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.PI;
 import java.util.List;
 
 
@@ -228,9 +229,22 @@ public class BulletPeer {
 	private void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
-			state = BulletState.HIT_WALL;
-			frame = 0;
-			owner.addEvent(new BulletMissedEvent(createBullet(false))); // Bugfix #366
+			if (power > 1) {
+				power /= 2;
+				if ((x - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())) {
+					heading = 2 * Math.PI - heading;
+				}
+				if ((y - RADIUS <= 0) || (y + RADIUS >= battleRules.getBattlefieldHeight())) {
+					heading = Math.PI - heading;
+					if (heading < 0) {
+						heading += 2 * Math.PI;
+					}
+				}
+			} else {
+				state = BulletState.HIT_WALL;
+				frame = 0;
+				owner.addEvent(new BulletMissedEvent(createBullet(false))); // Bugfix #366
+			}
 		}
 	}
 
